@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Repository;
 import com.example.demo.repository.IRepositoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,10 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RepositoryController {
 
+    @Autowired
     private final IRepositoryRepository repositoryRepository;
 
-    @GetMapping
-    public List<Repository> findAllRepositories() {
-        return repositoryRepository.findAll();
+
+
+    @GetMapping("/cons2")
+    public List<Repository> cons2() {
+        return repositoryRepository.findByParentRepoIsNotNullAndAssignment_Classroom_Teacher_EmailAndAssignment_DeadlineAfter("krodriguez@icesi.edu.co", Timestamp.valueOf("2026-03-15 00:00:00"));
     }
 }

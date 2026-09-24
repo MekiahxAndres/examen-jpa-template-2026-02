@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,39 +16,38 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String role;
-
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
+    @Column(nullable = false)
+    private String role;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private List<Classroom> userClassrooms;
+    private List<Classroom> taughtClassrooms;
 
-    @OneToMany(mappedBy = "owner_id", cascade = CascadeType.ALL)
-    private List<Repository> userRepositories;
+    @JsonIgnore
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Repository> ownedRepositories;
 
-    @OneToMany(mappedBy = "author_id", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<PullRequest> authoredPullRequests;
 
-    @OneToMany(mappedBy = "reviewer_id", cascade = CascadeType.ALL)
-    private List<PullRequest> reviewerPullRequests;
+    @JsonIgnore
+    @OneToMany(mappedBy = "reviewer")
+    private List<PullRequest> reviewedPullRequests;
 
-    @OneToMany(mappedBy = "author_id", cascade = CascadeType.ALL)
-    private List<Commit> authorCommits;
-
-
-
-
-
-
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Commit> commits;
 }
+

@@ -1,8 +1,10 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -15,33 +17,37 @@ public class Repository {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(name = "is_template", nullable = false)
-    private String isTemplate;
+    private Boolean isTemplate;
 
     @Column(name = "is_private", nullable = false)
-    private String isPrivate;
+    private Boolean isPrivate;
 
     @Column(name = "created_at", nullable = false)
-    private String createdAt;
+    private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<User> users;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "assignment_id", nullable = false)
+    private Assignment assignment;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<PullRequest> taughtRepositories;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
 
-    @ManyToOne(mappedBy = "author", cascade = CascadeType.ALL)
-    private List<PullRequest> authoredPullRequests;
 
-    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
-    private List<PullRequest> reviewedPullRequests;
+    @ManyToOne
+    @JoinColumn(name = "parent_repo_id")
+    private Repository parentRepo;
 
-    @ManyToOne(mappedBy = "commit", cascade = CascadeType.ALL)
-    private List<Commit> commits;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "repository", cascade = CascadeType.ALL)
+    private List<PullRequest> pullRequests;
+
 
 }
