@@ -14,6 +14,7 @@ import lombok.*;
 public class Commit {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "commit_hash", nullable = false, unique = true)

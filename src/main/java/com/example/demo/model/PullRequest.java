@@ -39,4 +39,6 @@ public class PullRequest {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewer_id")
     private User teacher;
+
+
 }

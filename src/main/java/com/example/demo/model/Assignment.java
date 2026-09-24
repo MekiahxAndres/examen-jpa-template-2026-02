@@ -31,7 +31,8 @@ public class Assignment {
     @Column(name = "max_score", nullable = false)
     private Integer maxScore;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "classroom_id")
     private Classroom classroom;
 
     @JsonIgnore

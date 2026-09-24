@@ -14,8 +14,9 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    @GeneratedValue()
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -23,24 +24,31 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(nullable = false)
     private String role;
 
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private List<Classroom> ownedRepositories;
+    private List<Classroom> userClassrooms;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<PullRequest> taughtRepositories;
+    @OneToMany(mappedBy = "owner_id", cascade = CascadeType.ALL)
+    private List<Repository> userRepositories;
 
-    @ManyToOne(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author_id", cascade = CascadeType.ALL)
     private List<PullRequest> authoredPullRequests;
 
-    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
-    private List<PullRequest> reviewedPullRequests;
+    @OneToMany(mappedBy = "reviewer_id", cascade = CascadeType.ALL)
+    private List<PullRequest> reviewerPullRequests;
 
-    @ManyToOne(mappedBy = "commits", cascade = CascadeType.ALL)
-    private List<Commit> commits;
+    @OneToMany(mappedBy = "author_id", cascade = CascadeType.ALL)
+    private List<Commit> authorCommits;
+
+
+
+
+
+
+
 }
